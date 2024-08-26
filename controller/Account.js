@@ -37,12 +37,13 @@ const signup = async (req, res) => {
 const signin = (req, res) => {
   const { email, password } = req.body;
 
+
   const query = 'SELECT * FROM users WHERE email = ?';
   db.query(query, [email], async (err, results) => {
     if (err) {
       res.status(500).json({ error: 'Error during sign-in' });
     } else if (results.length === 0) {
-      res.status(401).json({ error: 'Invalid credentials' });
+      res.status(401).json({ error: 'Email Not Registered' });
     } else {
       const user = results[0];
       const passwordMatch = await bcrypt.compare(password, user.password);
@@ -59,23 +60,23 @@ const signin = (req, res) => {
 
         res.json({ message: 'Signed in successfully' });
       } else {
-        res.status(401).json({ error: 'Invalid credentials' });
+        res.status(401).json({ error: 'Wrong Password' });
       }
     }
   });
 };
 
-const getUserFullname = async (req, res) => {
+const getUser = async (req, res) => {
     try {
       const userId = req.userId;
   
-      const query = 'SELECT fullname FROM users WHERE id = ?';
+      const query = 'SELECT fullname,role FROM users WHERE id = ?';
       db.query(query, [userId], (err, results) => {
         if (err || results.length === 0) {
           return res.status(404).json({ message: "User not found!" });
         }
   
-        res.json({ fullname: results[0].fullname });
+        res.json({ fullname: results[0].fullname, role: results[0].role });
       });
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -87,4 +88,4 @@ const signout = (req, res) => {
   res.json({ message: 'Signed out successfully' });
 };
 
-module.exports={ signup, signin, signout, getUserFullname };
+module.exports={ signup, signin, signout, getUser };

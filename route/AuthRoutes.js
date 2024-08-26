@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { signup, signin, signout, getUserFullname } = require('../controller/Account');
+const { signup, signin, signout, getUser } = require('../controller/Account');
 const { authenticateToken } = require('../middleware/Authentication');
 
 router.post('/signup', signup);
 router.post('/signin', signin);
 router.post('/signout', signout);
-router.get('/fullname', authenticateToken, getUserFullname);
+router.get('/fullname', authenticateToken, getUser);
 
 //buat test token
 router.get('/protected', authenticateToken, (req, res) => {
