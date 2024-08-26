@@ -70,4 +70,4 @@ const signout = (req, res) => {
   res.json({ message: 'Signed out successfully' });
 };
 
-exports.modules={ signup, signin, signout };
+module.exports={ signup, signin, signout };
