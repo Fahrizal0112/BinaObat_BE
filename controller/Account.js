@@ -65,9 +65,26 @@ const signin = (req, res) => {
   });
 };
 
+const getUserFullname = async (req, res) => {
+    try {
+      const userId = req.userId;
+  
+      const query = 'SELECT fullname FROM users WHERE id = ?';
+      db.query(query, [userId], (err, results) => {
+        if (err || results.length === 0) {
+          return res.status(404).json({ message: "User not found!" });
+        }
+  
+        res.json({ fullname: results[0].fullname });
+      });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+
 const signout = (req, res) => {
   res.clearCookie('token');
   res.json({ message: 'Signed out successfully' });
 };
 
-module.exports={ signup, signin, signout };
+module.exports={ signup, signin, signout, getUserFullname };
