@@ -7,7 +7,7 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 const COOKIE_MAX_AGE = process.env.COOKIE_MAX_AGE || 3600000; 
 
 const signup = async (req, res) => {
-    const { fullname, email, password, role } = req.body;
+    const { fullname, email, password, phone, role } = req.body;
   
     try {
       const checkEmailQuery = 'SELECT * FROM users WHERE email = ?';
@@ -20,7 +20,7 @@ const signup = async (req, res) => {
           return res.status(400).json({ error: 'Email already exists' });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const insertQuery = 'INSERT INTO users (fullname, email, password, role) VALUES (?, ?, ?, ?)';
+        const insertQuery = 'INSERT INTO users (fullname, email, password, phone, role) VALUES (?, ?, ?, ?)';
         db.query(insertQuery, [fullname, email, hashedPassword, role], (insertErr, result) => {
           if (insertErr) {
             return res.status(500).json({ error: 'Error creating user' });

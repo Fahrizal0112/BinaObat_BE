@@ -25,6 +25,7 @@ function createTableIfNotExists() {
       fullname VARCHAR(255) NOT NULL,
       email VARCHAR(255) NOT NULL UNIQUE,
       password VARCHAR(255) NOT NULL,
+      phonenumber VARCHAR(255) NOT NULL,
       role ENUM('Doctor', 'Patient', 'Admin') NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
