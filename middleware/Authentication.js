@@ -9,13 +9,14 @@ const authenticateToken = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const query = 'SELECT id FROM users WHERE id = ?';
+    const query = 'SELECT id, role FROM users WHERE id = ?';
     db.query(query, [decoded.userId], (err, results) => {
       if (err || results.length === 0) {
         return res.status(401).json({ message: 'Invalid token' });
       }
 
       req.userId = results[0].id;
+      req.userRole = results[0].role;
       next();
     });
   } catch (error) {

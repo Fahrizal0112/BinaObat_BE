@@ -1,12 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const { signup, signin, signout, getUser } = require('../controller/Account');
+const { signin, signout, getUser, linkDoctorToPatient, signup } = require('../controller/Account');
 const { authenticateToken } = require('../middleware/Authentication');
+const { signupDoctor, createDoctorSignupToken, createPatientByDoctor, getPatients, deletePatient } = require('../controller/admincontroller');
+const { prescribeMedication } = require('../controller/patient');
 
-router.post('/signup', signup);
+router.post('/signup', signupDoctor);
+router.post('/signupadmin', signup);
+router.post('/signup-patient', authenticateToken, createPatientByDoctor);
+router.post('/create-doctor-token', authenticateToken, createDoctorSignupToken);
+
+router.get('/get-patients', authenticateToken, getPatients);
+router.delete('/delete-patient/:patientId', authenticateToken, deletePatient);
+
 router.post('/signin', signin);
 router.post('/signout', signout);
 router.get('/fullname', authenticateToken, getUser);
+router.post('/link-doctor-patient', authenticateToken, linkDoctorToPatient);
+
+router.post('/prescribe', authenticateToken, prescribeMedication);
 
 //buat test token
 router.get('/protected', authenticateToken, (req, res) => {
