@@ -66,6 +66,15 @@ const createTables = () => {
       dosage VARCHAR(100) NOT NULL,
       frequency VARCHAR(100) NOT NULL,
       FOREIGN KEY (prescription_id) REFERENCES prescriptions(id)
+    )`,
+    `CREATE TABLE IF NOT EXISTS chat_messages (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      sender_id INT,
+      receiver_id INT,
+      message TEXT,
+      sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (sender_id) REFERENCES users(id),
+      FOREIGN KEY (receiver_id) REFERENCES users(id)
     )`
   ];
 

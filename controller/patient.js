@@ -174,7 +174,7 @@ const getPrescriptionDetails = (req, res) => {
       const patientId = patientResults[0].id;
   
       const getPrescriptionsQuery = `
-        SELECT p.id as prescription_id, p.created_at, u.fullname as doctor_name
+        SELECT p.id as prescription_id, p.created_at, u.fullname as doctor_name, p.doctor_id
         FROM prescriptions p
         JOIN users u ON p.doctor_id = u.id
         WHERE p.patient_id = ?

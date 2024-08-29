@@ -4,6 +4,7 @@ const { signin, signout, getUser, linkDoctorToPatient, signup } = require('../co
 const { authenticateToken } = require('../middleware/Authentication');
 const { signupDoctor, createDoctorSignupToken, createPatientByDoctor, getPatients, deletePatient } = require('../controller/admincontroller');
 const { prescribeMedication, getPatientPrescriptions, getPrescriptionDetails, getPatientOwnPrescriptions } = require('../controller/patient');
+const { sendMessage, getChatHistory } = require('../controller/chat');
 
 router.post('/signup', signupDoctor);
 router.post('/signupadmin', signup);
@@ -22,6 +23,11 @@ router.post('/prescribe', authenticateToken, prescribeMedication);
 router.get('/:patientId/prescriptions', authenticateToken, getPatientPrescriptions);
 router.get('/prescription/:prescriptionId', authenticateToken, getPrescriptionDetails);
 router.get('/prescriptionsid', authenticateToken, getPatientOwnPrescriptions);
+
+
+router.post('/send', authenticateToken, sendMessage);
+router.get('/history/:partnerId', authenticateToken, getChatHistory);
+
 
 //buat test token
 router.get('/protected', authenticateToken, (req, res) => {
